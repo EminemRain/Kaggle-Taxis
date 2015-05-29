@@ -18,9 +18,9 @@ def main():
          max(data) + binwidth)), binwidth)
     # the histogram of the data
     plt.hist(data, bins=bins, facecolor='green', alpha=0.75)
-    plt.xlabel('Trip Distance')
+    plt.xlabel('Trip Distance(km)')
     plt.ylabel('Number of trips')
-    plt.title(r'$\mathrm{Histogram\ of\ IQ:}\ \mu=100,\ \sigma=15$')
+    plt.title(r'Proportion of trips')
     plt.axis([0, 20, 0, 1000000])
     plt.grid(True)
     plt.show()
