@@ -25,6 +25,16 @@ class DayType:
 def distance(loc1, loc2):
     return distance_internal(loc1[0], loc1[1], loc2[0], loc2[1])
 
+def createSubmission(d): # d is the dictionary where numerical keys map to tuples
+    sub = "\"TRIP_ID\",\"LATITUDE\",\"LONGITUDE\"\n"
+
+    for key in sort(keys(d)):  
+        coords = d.get(key)
+        sub += "\"" + str(key) + "\"," + str(coords[0]) + "\"," + str(coords[1]) "\"\n"
+
+    with open('submission.csv', "w") as output_file:
+        output_file.write(sub)
+
 def distance_internal(lon1, lat1, lon2, lat2):
     """
     Calculate the great circle distance between two points 
