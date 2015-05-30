@@ -3,7 +3,7 @@ import re
 import string
 import datetime
 
-kInputFile = "train2.csv"
+kInputFile = "train.csv"
 
 class Columns:
     trip_id = 0
