@@ -28,9 +28,9 @@ def distance(loc1, loc2):
 def createSubmission(d): # d is the dictionary where numerical keys map to tuples
     sub = "\"TRIP_ID\",\"LATITUDE\",\"LONGITUDE\"\n"
 
-    for key in sort(keys(d)):  
-        coords = d.get(key)
-        sub += "\"" + str(key) + "\"," + str(coords[0]) + "\"," + str(coords[1]) "\"\n"
+    for key in sorted(d):  
+        coords = d[key]
+        sub += "\"T" + str(key) + "\"," + str(coords[0]) + "," + str(coords[1]) + "\n"
 
     with open('submission.csv', "w") as output_file:
         output_file.write(sub)
