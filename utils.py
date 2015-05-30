@@ -98,3 +98,9 @@ def frechet_dist(P,Q):
     ca = np.multiply(ca,-1)
     return _c(ca,len(P)-1,len(Q)-1,P,Q)
 
+def path_to_csv(path):
+    coord_strings = []
+    for coord in path:
+        coord_strings.append("[%s,%s]" % (coord[0], coord[1]))
+    return_str = ','.join(coord_strings)
+    return "\"[" + return_str + "]\""
