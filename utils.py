@@ -3,8 +3,10 @@ import re
 import string
 import datetime
 import numpy as np
+from memoize import mproperty
 
-kInputFile = "train2.csv"
+kInputFile = "train.csv"
+testInputFile = "test.csv"
 
 class Columns:
     trip_id = 0
@@ -24,6 +26,16 @@ class DayType:
 
 def distance(loc1, loc2):
     return distance_internal(loc1[0], loc1[1], loc2[0], loc2[1])
+
+def createSubmission(d): # d is the dictionary where numerical keys map to tuples
+    sub = "\"TRIP_ID\",\"LATITUDE\",\"LONGITUDE\"\n"
+
+    for key in sorted(d):  
+        coords = d[key]
+        sub += "\"T" + str(key) + "\"," + str(coords[0]) + "," + str(coords[1]) + "\n"
+
+    with open('submission.csv', "w") as output_file:
+        output_file.write(sub)
 
 def distance_internal(lon1, lat1, lon2, lat2):
     """
@@ -79,11 +91,11 @@ def _c(ca,i,j,P,Q):
     elif i == 0 and j == 0:
         ca[i,j] = distance(P[0],Q[0])
     elif i > 0 and j == 0:
-        ca[i,j] = max(_c(ca,i-1,0,P,Q),euc_dist(P[i],Q[0]))
+        ca[i,j] = max(_c(ca,i-1,0,P,Q),distance(P[i],Q[0]))
     elif i == 0 and j > 0:
-        ca[i,j] = max(_c(ca,0,j-1,P,Q),euc_dist(P[0],Q[j]))
+        ca[i,j] = max(_c(ca,0,j-1,P,Q),distance(P[0],Q[j]))
     elif i > 0 and j > 0:
-        ca[i,j] = max(min(_c(ca,i-1,j,P,Q),_c(ca,i-1,j-1,P,Q),_c(ca,i,j-1,P,Q)),euc_dist(P[i],Q[j]))
+        ca[i,j] = max(min(_c(ca,i-1,j,P,Q),_c(ca,i-1,j-1,P,Q),_c(ca,i,j-1,P,Q)),distance(P[i],Q[j]))
     else:
         ca[i,j] = float("inf")
     return ca[i,j]
