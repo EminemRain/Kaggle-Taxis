@@ -1,12 +1,14 @@
+import array
 from math import *
 import re
 import string
 import datetime
 import numpy as np
-from memoize import mproperty
 
 kInputFile = "train.csv"
-testInputFile = "test.csv"
+kTestInputFile = "in_test.csv"
+kAnswerInputFile = "in_answer.csv"
+kKilometer = 0.00899325
 
 class Columns:
     trip_id = 0
@@ -23,6 +25,12 @@ class DayType:
     normal_day = 0
     holiday = 1
     pre_holiday = 2
+
+def distance_first(path1, path2):
+    return distance_internal(path1[0], path1[1], path2[0], path2[1])
+
+def fast_distance(loc1, loc2):
+    return sqrt((loc1[0] - loc2[0]) ** 2 + (loc1[1] - loc2[1]) ** 2) / kKilometer
 
 def distance(loc1, loc2):
     return distance_internal(loc1[0], loc1[1], loc2[0], loc2[1])
@@ -116,3 +124,36 @@ def path_to_csv(path):
         coord_strings.append("[%s,%s]" % (coord[0], coord[1]))
     return_str = ','.join(coord_strings)
     return "\"[" + return_str + "]\""
+
+def truncate_path(test_path, training_path):
+    test_dist = 0
+    train_dist = 0
+    train_res = [training_path[0]]
+    for i in xrange(0,len(test_path) - 1):
+        test_dist += distance(test_path[i], test_path[i + 1]) 
+
+    for i in xrange(0, len(training_path) - 1):
+        curr_dist = distance(training_path[i + 1], training_path[i])
+        if (abs(train_dist + curr_dist - test_dist) >
+            abs(train_dist - test_dist)):
+            break
+	train_dist += curr_dist
+        train_res.append(training_path[i + 1])
+
+    return train_res
+
+def starting_point_close(path1, path2):
+    return distance(path1[0], path2[0]) < 0.1
+
+def path_to_array(path):
+    a = array.array("f")
+    for point in path:
+        a.append(point[0])
+        a.append(point[1])
+    return a
+
+def array_to_path(array):
+    path = []
+    for i in xrange(0, len(array), 2):
+        path.append((array[i], array[i + 1]))
+    return path
