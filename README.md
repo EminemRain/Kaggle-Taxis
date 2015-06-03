@@ -41,3 +41,11 @@ python get_subset.py -n 100000 -i train.csv -o train_temp.csv
 python make_test.py -n 300 -i train_temp.csv -o in
 python test_paths.py
 ~~~
+
+Misc
+====
+* The `Old` directory contains now deprecated files and learning algorithms. Currently it 
+contains an implementation of the naive bayes algorithm to predict the angle a car
+will travel in given the time of day and a script to test the accuracy.
+* The `Graphing` directory contains scripts that were used to generate graphs about the
+training data during the exploratory analysis stage.
