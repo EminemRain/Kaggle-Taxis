@@ -5,9 +5,9 @@ import string
 import datetime
 import numpy as np
 
-kInputFile = "train.csv"
+kTrainingInputFile = "train.csv"
 kTestInputFile = "test.csv"
-kAnswerInputFile = "in_answer.csv"
+kAnswerFile = "in_answer.csv"
 kKilometer = 0.00899325
 
 class Columns:
@@ -21,20 +21,6 @@ class Columns:
     missing_data = 7
     path = 8
 
-class DayType:
-    normal_day = 0
-    holiday = 1
-    pre_holiday = 2
-
-def distance_first(path1, path2):
-    return distance_internal(path1[0], path1[1], path2[0], path2[1])
-
-def fast_distance(loc1, loc2):
-    return sqrt((loc1[0] - loc2[0]) ** 2 + (loc1[1] - loc2[1]) ** 2) / kKilometer
-
-def distance(loc1, loc2):
-    return distance_internal(loc1[0], loc1[1], loc2[0], loc2[1])
-
 def createSubmission(d): # d is the dictionary where numerical keys map to tuples
     sub = "\"TRIP_ID\",\"LATITUDE\",\"LONGITUDE\"\n"
 
@@ -44,6 +30,12 @@ def createSubmission(d): # d is the dictionary where numerical keys map to tuple
 
     with open('submission.csv', "w") as output_file:
         output_file.write(sub)
+
+def distance_first(path1, path2):
+    return distance_internal(path1[0], path1[1], path2[0], path2[1])
+
+def distance(loc1, loc2):
+    return distance_internal(loc1[0], loc1[1], loc2[0], loc2[1])
 
 def distance_internal(lon1, lat1, lon2, lat2):
     """
