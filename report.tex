@@ -17,4 +17,13 @@ To improve the efficiency of electronic taxi dispatching systems it is important
 
 This project occurs in the context of a Kaggle competition hosted by ECML/PKDD. The goal of this competition is to predict the destination of taxis travelling in Porto, Portugal given specific data about the current trip. To aid with this a dataset of around 1.7 million complete trips is provided.
 
+\section{Features and Observations of the Data Set}
+Domain specific features, and initial observations.
+The spatial trajectory of an occupied taxi could provide some hints as to where it is going. Similarly, given the taxi id, it might be possible to predict its final destination based on the regularity of pre-hired services. In a significant number of taxi rides (approximately $25$\%), the taxi has been called through the taxi call-center, and the passenger’s telephone id can be used to narrow the destination prediction based on historical ride data connected to their telephone id.
+Initially, naive Bayesian conditions were graphed to find any potential connections in the data - frequency of taxi rides, given the time of day, or type of day, or taxi request type, or the average heading of the taxi from start to finish given the time/type of day/taxi request. These were plotted in a series of graphs shown below in Appendix 1. 
+It was hoped that these could provide some hint as to the final destination - for example, taxis are most frequently called between the hours of X and Y. A 3D histogram was then created to check for a connection between time of day and average heading. This can be seen in Figure b) of Appendix 1. 
+In all of these graphs no significant connections were found, except that the overwhelming majority of taxi trips took place not on or before public holidays - but this is obvious. 
+The baseline approach was simply to classify all taxi rides as ending in downtown Porto - as the majority went here anyway, this proved effective. 
+The approach in this project improved upon this and ended up using none of the connections hypothesised above. 
+
 \end{document}

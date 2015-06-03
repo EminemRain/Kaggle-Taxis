@@ -5,8 +5,8 @@ import string
 import datetime
 import numpy as np
 
-kTrainingInputFile = "train.csv"
-kTestInputFile = "test.csv"
+kTrainingInputFile = "train3.csv"
+kTestInputFile = "in_test.csv"
 kAnswerFile = "in_answer.csv"
 kKilometer = 0.00899325
 

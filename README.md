@@ -49,3 +49,4 @@ contains an implementation of the naive bayes algorithm to predict the angle a c
 will travel in given the time of day and a script to test the accuracy.
 * The `Graphing` directory contains scripts that were used to generate graphs about the
 training data during the exploratory analysis stage.
+* The sklearn package is required to run this code. This can be installed with "pip install sklearn-pandas"

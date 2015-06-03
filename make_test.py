@@ -47,6 +47,9 @@ def transform_rows(input_file, num_tests):
             path = utils.get_column(utils.Columns.path, line)
             if len(path) == 0:
                 continue
+            # FOR DEBUGGING
+            #print line
+
             end = random.randint(0, len(path))
             input_row = ",".join(string.split(line, ",", 8)[:8]) + ","
             input_row += utils.path_to_csv(path[:end])
