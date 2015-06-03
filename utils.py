@@ -6,7 +6,7 @@ import datetime
 import numpy as np
 
 kInputFile = "train.csv"
-kTestInputFile = "in_test.csv"
+kTestInputFile = "test.csv"
 kAnswerInputFile = "in_answer.csv"
 kKilometer = 0.00899325
 

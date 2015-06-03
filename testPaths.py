@@ -53,19 +53,19 @@ def naiveFrechetPredictor():
     nbrs = NearestNeighbors(n_neighbors=10000, algorithm="ball_tree", metric=utils.distance_first).fit(arr)
 
     for line in f:
-        ans = g.readline()
-        ans = string.split(ans, ",")
-        ans = (float(ans[1]), float(ans[2]))
+        #ans = g.readline()
+        #ans = string.split(ans, ",")
+        #ans = (float(ans[1]), float(ans[2]))
         final_path = []
         final_ids = []
-        for point in nbrs.kneighbors([ans], return_distance=False)[0]:
-            final_path.append(complete_path[point])
-            final_ids.append(ids[point])
         p = utils.get_column(utils.Columns.path, line)
         if not p:
             continue
+        for point in nbrs.kneighbors([p[0]], return_distance=False)[0]:
+            final_path.append(complete_path[point])
+            final_ids.append(ids[point])
         dest = finalDest(utils.get_column(0, line), p, final_ids, final_path)
-        print utils.distance(dest, ans)
+        print utils.get_column(0, line),",", dest
 
 if __name__ == "__main__":
     naiveFrechetPredictor()
