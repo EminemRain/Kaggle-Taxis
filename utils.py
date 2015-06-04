@@ -61,17 +61,17 @@ def get_column(column, line):
     if col == "":
         return None
     if column == Columns.trip_id:
-        return int(col)
+        return col
     elif column == Columns.call_type:
         return col
     elif column == Columns.origin_call:
-        return int(col)
+        return col
     elif column == Columns.origin_stand:
-        return int(col)
+        return col
     elif column == Columns.taxi_id:
-        return int(col)
+        return col
     elif column == Columns.timestamp:
-        return datetime.datetime.fromtimestamp(int(col))
+        return col
     elif column == Columns.day_type:
         return col
     elif column == Columns.missing_data:
