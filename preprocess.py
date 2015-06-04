@@ -3,7 +3,11 @@ from random import randint
 
 f = open("train.csv", "r")
 
+i = 0
 for line in f:
+    if i == 0:
+        i+=1
+        continue
     origin_call = utils.get_column(2, line)
     if origin_call is None:
         origin_call = 0

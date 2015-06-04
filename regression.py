@@ -33,6 +33,7 @@ l1 = []
 l2 = []
 l3 = []
 print "testing"
+count = 0
 for i in xrange(len(X_test)):
     pred1 = clf_1.predict(X_test[i])
     pred2 = clf_2.predict(X_test[i])
@@ -40,7 +41,14 @@ for i in xrange(len(X_test)):
     l1.append(utils.distance(pred1[0], y_test[i]))
     l2.append(utils.distance(pred2[0], y_test[i]))
     l3.append(utils.distance(pred3[0], y_test[i]))
+    count += 1
+    if count == 0 % 2:
+    	print pred3[0]
+    	print y_test[i]
+    	print X_test[i]
+
 
 print sum(l1) / len(l1)
 print sum(l2) / len(l2)
 print sum(l3) / len(l3)
+print count
