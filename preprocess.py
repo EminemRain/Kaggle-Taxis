@@ -17,6 +17,6 @@ for line in f:
     if len(path) < 2 or missing_data:
         continue
     point = path[randint(1, len(path) - 1)]
-    print "%s,%s,%s,%s,%s,%f,%f,%f,%f,%f,%f" % (origin_call, origin_stand, taxi_id, 
+    print "%s,%s,%s,%s,%f,%f,%f,%f,%f,%f" % (origin_call, origin_stand, taxi_id, 
                                                 timestamp, path[0][0],path[0][1],point[0],
                                                 point[1],path[-1][0],path[-1][1])
