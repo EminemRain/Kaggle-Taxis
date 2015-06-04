@@ -46,12 +46,20 @@ The idea behind the modification of POLYLINE is that we would like to transform 
 After having modified the dataset we then train a regression tree on the generated training set. A maximum depth of 20 leads to good performance. We also train a regression tree used in conjunction with AdaBoost, however since 
 
 \subsection{Frechet Distance and KNN}
+Another method used was a naive Frechet classifier, with the estimated endpoint to be the end of the path which when truncated had the smallest Frechet distance to the partial path. This was tested using a training set of 200 000, and had an average distance of about 7km. 
+After some research into k Nearest Neighbours, another approach, the final approach, was considered. 
+The method was to read the paths of all the trips given into a ball tree [1], using the distance metric of the Haversine distance [2] between the starting points of the paths. 
+For each partial path that needs its destination estimated, the k nearest neighbours to the path are found from the ball tree, using the distance metric with k = 10 000. From these 10 000 paths, each path is truncated to constitute the same distance travelled as the partial path given. Then the partial path is compared to every truncated path using the Frechet distance [3]. The end coordinates of the path with the smallest Frechet distance from the partial path is chosen to be the estimated endpoint. 
+With k = 10 000, preliminary results from running on a validation set taken from the given data, of size 300, indicate that the mean error is 2km, which is performing better than all other learners on the Kaggle leaderboards. However, this performed poorly on the actual test set that Kaggle used. This idea is promising, but appears to have overfit the test data. While this does perfomr worse htan the baseline on the evaluation data, getting a score of ~3.8 ish, this could still be practically used, as it would perform better classification on trips that did not end up in downtown Porto. 
 
 
 \section{Results}
+Running cross validation on the given data set with trees of size 5, 8 and 20 yields average distances of 2.28km, 2.09km and 1.72km respectively. Clearly the regression tree performs better with a greater depth, and since cross validation is used, this is unlikely to be overfitting. 
 
 \section{Further Work}
 
 \section{Conclusion}
+
+\section{Appendix}
 
 \end{document}

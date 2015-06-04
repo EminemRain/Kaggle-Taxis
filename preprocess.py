@@ -1,7 +1,9 @@
 import utils
 from random import randint
+
 f = open("train.csv", "r")
 out = open(utils.kRegressionTrainFile, "w")
+
 for line in f:
     origin_call = utils.get_column(2, line)
     if origin_call is None:
