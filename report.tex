@@ -43,23 +43,41 @@ The second method that was attempted was the use of regression trees, both used 
 \end{itemize}
 The idea behind the modification of POLYLINE is that we would like to transform a variable length vector into a fixed length vector, we also would like to modify polyline to only be a partial path since a complete path would not help with prediction.
 
-After having modified the dataset we then train a regression tree on the generated training set. A maximum depth of 20 leads to good performance. We also train a regression tree used in conjunction with AdaBoost, however since 
+After having modified the dataset we then train a regression tree on the generated training set. A maximum depth of 20 leads to good performance. We also train a regression tree used in conjunction with AdaBoost, with 5 instances and a max depth of 20 for better performance.
 
 \subsection{Frechet Distance and KNN}
-Another method used was a naive Frechet classifier, with the estimated endpoint to be the end of the path which when truncated had the smallest Frechet distance to the partial path. This was tested using a training set of 200 000, and had an average distance of about 7km. 
-After some research into k Nearest Neighbours, another approach, the final approach, was considered. 
-The method was to read the paths of all the trips given into a ball tree [1], using the distance metric of the Haversine distance [2] between the starting points of the paths. 
-For each partial path that needs its destination estimated, the k nearest neighbours to the path are found from the ball tree, using the distance metric with k = 10 000. From these 10 000 paths, each path is truncated to constitute the same distance travelled as the partial path given. Then the partial path is compared to every truncated path using the Frechet distance [3]. The end coordinates of the path with the smallest Frechet distance from the partial path is chosen to be the estimated endpoint. 
-With k = 10 000, preliminary results from running on a validation set taken from the given data, of size 300, indicate that the mean error is 2km, which is performing better than all other learners on the Kaggle leaderboards. However, this performed poorly on the actual test set that Kaggle used. This idea is promising, but appears to have overfit the test data. While this does perfomr worse htan the baseline on the evaluation data, getting a score of ~3.8 ish, this could still be practically used, as it would perform better classification on trips that did not end up in downtown Porto. 
+\subsubsection{Frechet Distance}
+The final and best performing method that was evaluated only made use of the paths. It used a similarity measure between two oriented curves called the frechet distance. The frechet between two curves $A$ and $B$ is defined as follow:
+\[\inf_{\alpha,\beta} \max_{t \in [0,1]} \left( d(A(\alpha(t)), B(\beta(t))) \right).\]
+Where $d$ in our case is the haversine distance between two GPS coordinates. Intuitively the frechet distance can be thought as being the minimum length of a leash required to connect a dog and its owner constrained on the two seperate paths, as they walk along with no backtracking. In our case we are dealing with polygonal line segments and thus only need to consider the curves at each vertex, an approach using dynamic programming is given in the implementation.
+\subsubsection{Truncating paths.}
+We could simply compare the current test data's path with all training paths and pick the destination of the training path with the shortest frechet distance as our prediction. However this does not work well in practice since this favours predictions that assume that the test path is nearly complete (which it is not in the majority of situations). To remedy this we instead chose to truncate training paths that are longer than the test path before comparing them. We define the length of a polygonal path as the haversine distance between every pair of adjacent coordinates in the path.
+\subsubsection{K nearest neighbours}
+Calculating the Frechet distance is computationally expensive, given a path of length $m$
+and a path of length $n$, it takes $O(mn)$ time to compute the distance. As such, computing the Frechet distance for between every test path against every training path is computationally infeasible. Instead we would like to quickly eliminate the majority of training paths without taking their Frechet distance from the test path. Solutions to the k nearest neighbours problem such as the ball tree naturally lend themselves to this. Unfortunately we can't build a ball tree using our distance function as a metric since we truncate paths before applying the Frechet distance, our distance function does not induce a metric space \footnote{Specifically, the distance function does not satisfy the identity of indiscernible and triangle inequality.} making it unsuitable for KNN.
 
+Instead we use the distance from the starting point of two paths as our metric in the ball tree. We then grab the 10,000 paths with starting point closest to our test path and get the path with the closest Frechet distance of the test path out of all those paths. In practice this works very well since it gives the starting point of a path a higher precedence than other points.
+\subsection{Memory and time constraints}
+To reduce the running time of our algorithm we wished to keep disk I/O to a minimum, hence we loaded every single data-point into memory before operating on it. Unfortunately this meant that python's native datatypes could no longer be used as our program would require greater than 12Gb to run. We thus had to make use of efficient arrays and take care not to accidentally expand too much data into python's native floats at any one point.
 
 \section{Results}
-Running cross validation on the given data set with trees of size 5, 8 and 20 yields average distances of 2.28km, 2.09km and 1.72km respectively. Clearly the regression tree performs better with a greater depth, and since cross validation is used, this is unlikely to be overfitting. 
+Results using Naive Bayes were not promising and as such weren't extensively tested. 
+
+We ran a 10 fold cross validation test on a regression tree with maximum depth of: 5, 20, and 40 and on AdaBoost with 5 instances of a regression tree of max depth of 20. The results were as follows:
+
+\begin{table}
+\centering
+\begin{tabular}{ |c|c|c|c|c|c| }
+  \hline
+  Algorithm & Tree 5 & Tree 20 & Tree 40 & AdaBoost & Baseline\\ 
+  \hline                      
+  Error & 2 & 3 & 3&2&s \\
+  \hline  
+\end{tabular}
+\end{table}
 
 \section{Further Work}
 
 \section{Conclusion}
-
-\section{Appendix}
 
 \end{document}
