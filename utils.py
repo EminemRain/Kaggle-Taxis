@@ -8,6 +8,7 @@ import numpy as np
 kTrainingInputFile = "train3.csv"
 kTestInputFile = "in_test.csv"
 kAnswerFile = "in_answer.csv"
+kRegressionTrainFile = "reg_train.csv"
 kKilometer = 0.00899325
 
 class Columns:
