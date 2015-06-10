@@ -5,10 +5,11 @@ import string
 import datetime
 import numpy as np
 
-kTrainingInputFile = "train3.csv"
+kTrainingInputFile = "in_train.csv"
 kTestInputFile = "in_test.csv"
 kAnswerFile = "in_answer.csv"
 kRegressionTrainFile = "reg_train.csv"
+kRegressionTestFile = "reg_test.csv"
 kKilometer = 0.00899325
 
 class Columns:
@@ -22,7 +23,7 @@ class Columns:
     missing_data = 7
     path = 8
 
-def createSubmission(d): # d is the dictionary where numerical keys map to tuples
+def create_submission(d): # d is the dictionary where numerical keys map to tuples
     sub = "\"TRIP_ID\",\"LATITUDE\",\"LONGITUDE\"\n"
 
     for key in sorted(d):  

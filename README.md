@@ -4,6 +4,10 @@ This repository contains David McKinnon and Karl Krauth's various scripts used
 within the Kaggle competition hosted by ECML/PKDD on taxi trajectory prediction:
 https://www.kaggle.com/c/pkdd-15-predict-taxi-service-trajectory-i
 
+IMPORTANT PLEASE READ
+=====================
+Note, this folder contains our initial project, we later switched to a project involving reinforcement learning due to the poor performance on Kaggle. Only evaluate this if you have already evaluated the reinforcement learning project and would like to also include this in your evaluation. If this would lead to lost marks do not evaluate anything in this folder.
+
 Files
 =====
 The parent directory in which this README file is located contains the following filed:
@@ -30,7 +34,9 @@ in `in_test.csv` and outputs the prediction to stdout. If `in_answer.csv` is ava
 will also output the distance of its prediction from the true answer.
 * `utils.py`: Contains various utility functions used throughout this repository. Also contains constants
 such as file names.
-
+* `preprocess.py`: Preprocesses data in `train.csv` to work with our regression tree algorithms and outputs the
+preprocessed information to `reg_test.csv`.
+* `regression.py`: Takes data from `reg_test.csv` and uses boosted learning to output predictions to `submission.csv`.
 Example use case
 ================
 Say we have our initial training set in a file called `train.csv`. We wish to evaluate our 

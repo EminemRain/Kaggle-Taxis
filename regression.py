@@ -47,9 +47,8 @@ def generate_results(features, classes, ids, test_input):
 def test_regression(features, classes):
     X_train, X_test, y_train, y_test = cross_validation.train_test_split(features,
                                        classes, test_size=0.1, random_state=0)
-
-    clf_10 = AdaBoostRegressor(DecisionTreeRegressor(max_depth=20), n_estimators=10)
-    clf_11 = AdaBoostRegressor(DecisionTreeRegressor(max_depth=20), n_estimators=10)
+    clf_10 = AdaBoostRegressor(DecisionTreeRegressor(max_depth=20), n_estimators=20)
+    clf_11 = AdaBoostRegressor(DecisionTreeRegressor(max_depth=20), n_estimators=20)
     clf_2 = DecisionTreeRegressor(max_depth=20)
 
     y_train0 = []
